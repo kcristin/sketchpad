@@ -12,17 +12,19 @@
 </head>
 
 <body>
+    <br>
     <div class="content">
     </div>
 
     <script>
 
-        const gridLength = 10;
+        const ROW_LENGTH = 500;
+        let gridLength = prompt('How long?');
         const content = document.querySelector('.content');
 
         let idArray = [];
         let padSize = gridLength * gridLength;
-
+    
         for (let i = 1; i <= padSize; i++) {
             idArray[i - 1] = i.toString();
         }
@@ -32,7 +34,7 @@
             let block = document.createElement('div');
             block.className = "block";
             block.id = `block_${idArray.pop()}`;
-            block.style.cssText = "background-color: blue; display: inline-grid; width: 50px; height: 50px;";
+            block.style.cssText = `background-color: blue; display: inline-grid; width: ${ROW_LENGTH/gridLength}px; height: ${ROW_LENGTH/gridLength}px;`;
 
             addEvent(block);
             return block;
@@ -53,7 +55,7 @@
             let blockRow = document.createElement('div');
             blockRow.className = "row";
             blockRow.id = `row_${index}`;
-            blockRow.style.cssText = 'height: 50px';
+            blockRow.style.cssText = `height: ${ROW_LENGTH/gridLength}px`;
 
             for (let k = 1; k <= gridLength; k++) {
                 let block = createChildDiv();
