@@ -5,29 +5,62 @@
     <meta charset="utf-8">
     <title>ETCH-A-SKETCH</title>
     <style>
-        div.content {
+        /* div.content {
             text-align: center;
-        }
-        
-        div.block {
-            background-color: blue;
-            display: grid;
-            width: 50px;
-            height: 50px;
-        }
+        } */
     </style>
 </head>
 
 <body>
     <div class="content">
-        <div class="block"></div>
     </div>
 
     <script>
-        const block = document.querySelector(".block");
-        block.addEventListener('mouseleave', () => {
-            block.style.backgroundColor = "yellow";
-        });
+
+        const gridLength = 5;
+        const content = document.querySelector('.content');
+
+        let idArray = [];
+        let padSize = gridLength * gridLength;
+
+        for (let i = 1; i <= padSize; i++) {
+            idArray[i - 1] = i.toString();
+        }
+        idArray.reverse();
+
+        let createChildDiv = () => {
+            let block = document.createElement('div');
+            block.className = "block";
+            block.style.cssText = "background-color: blue; display: inline-grid; width: 50px; height: 50px;";
+            return block;
+        }
+
+        let addEvent = (block) => {
+            block.addEventListener('mouseleave', () => {
+                block.style.backgroundColor = 'yellow';
+            })
+        }
+
+        let createParentDiv = (index) => {
+
+            let blockRow = document.createElement('div');
+            blockRow.className = "row";
+            blockRow.id = `row_${index}`;
+            blockRow.style.cssText = 'height: 50px';
+
+            for (let k = 1; k <= gridLength; k++) {
+                let block = createChildDiv();
+                block.id = `block_${idArray.pop()}`;
+                addEvent(block);
+                blockRow.appendChild(block);
+            }
+            content.appendChild(blockRow);
+        }
+
+        for (let j = 1; j <= gridLength; j++) {
+            createParentDiv(j);
+        }
+
     </script>
 </body>
 </html>
