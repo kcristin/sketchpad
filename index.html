@@ -5,21 +5,35 @@
     <meta charset="utf-8">
     <title>ETCH-A-SKETCH</title>
     <style>
+        body {
+            text-align: center;
+        }
+
         div.content {
             text-align: center;
+            display: inline-block;
+            width: 960px;
+            height: 960px;
+            border: 1px black solid;
         }
     </style>
 </head>
 
 <body>
+    <!-- <button id="clear">Clear</button> -->
     <br>
     <div class="content">
     </div>
 
     <script>
 
-        const ROW_LENGTH = 500;
-        let gridLength = prompt('How long?');
+        const ROW_LENGTH = 960;
+        let gridLength = 101;
+
+        while (gridLength > 100) {
+            gridLength = prompt('How many pixels would you like per row? [Limit: 100]');
+        }
+        
         const content = document.querySelector('.content');
 
         let idArray = [];
@@ -34,7 +48,7 @@
             let block = document.createElement('div');
             block.className = "block";
             block.id = `block_${idArray.pop()}`;
-            block.style.cssText = `background-color: blue; display: inline-grid; width: ${ROW_LENGTH/gridLength}px; height: ${ROW_LENGTH/gridLength}px;`;
+            block.style.cssText = `background-color: white; display: inline-grid; width: ${ROW_LENGTH/gridLength}px; height: ${ROW_LENGTH/gridLength}px;`;
 
             addEvent(block);
             return block;
@@ -46,7 +60,7 @@
             block.addEventListener('mouseenter', () => {
                 count++;
                 console.log(count);
-                block.style.backgroundColor = `rgba(255,255,0, ${(opacity * count)})`;
+                block.style.backgroundColor = `rgba(0,0,0, ${(opacity * count)})`;
             })
         }
 
@@ -64,10 +78,11 @@
             content.appendChild(blockRow);
         }
 
+        
         for (let j = 1; j <= gridLength; j++) {
             createParentDiv(j);
         }
-
+        
     </script>
 </body>
 </html>
