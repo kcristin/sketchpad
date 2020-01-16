@@ -3,10 +3,25 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ETCH-A-SKETCH</title>
+    <title>SKETCH PAD</title>
     <style>
         body {
             text-align: center;
+            background-color: rgb(0,0,255, 0.1);
+        }
+
+        #title {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 75pt;
+        }
+
+        #reset {
+            width: 100px;
+            height: 50px;
+            border-radius: 2em;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13pt;
+            outline: 0;
         }
 
         div.content {
@@ -20,29 +35,54 @@
 </head>
 
 <body>
-    <!-- <button id="clear">Clear</button> -->
+    <header id="title">Sketch Pad</header>
+    <br>
+    <button id="reset">Reset</button>
+    <br>
     <br>
     <div class="content">
     </div>
 
     <script>
-
+        const content = document.querySelector('.content');
+        const reset = document.querySelector('#reset');
+        
         const ROW_LENGTH = 960;
         let gridLength = 101;
 
-        while (gridLength > 100) {
-            gridLength = prompt('How many pixels would you like per row? [Limit: 100]');
+        let createCanvas = (gridLength) => {
+            for (let j = 1; j <= gridLength; j++) {
+                createParentDiv(j);
+            }
         }
-        
-        const content = document.querySelector('.content');
 
-        let idArray = [];
-        let padSize = gridLength * gridLength;
-    
-        for (let i = 1; i <= padSize; i++) {
-            idArray[i - 1] = i.toString();
+        let clearCanvas = () => {
+            for (let i = 1; i <= gridLength; i++) {
+                content.removeChild(document.getElementById(`row_${i}`));
+            }
         }
-        idArray.reverse();
+
+        let promptUser = () => {
+            gridLength = 101;
+            while (gridLength > 100) {
+                gridLength = prompt('How many pixels would you like per row? [Limit: 100]');
+            }
+            return gridLength;
+        }
+
+        let createParentDiv = (index) => {
+
+            let blockRow = document.createElement('div');
+            blockRow.className = "row";
+            blockRow.id = `row_${index}`;
+            blockRow.style.cssText = `height: ${ROW_LENGTH/gridLength}px`;
+
+            for (let k = 1; k <= gridLength; k++) {
+                let block = createChildDiv();
+                blockRow.appendChild(block);
+            }
+            content.appendChild(blockRow);
+        }
 
         let createChildDiv = () => {
             let block = document.createElement('div');
@@ -60,28 +100,28 @@
             block.addEventListener('mouseenter', () => {
                 count++;
                 console.log(count);
-                block.style.backgroundColor = `rgba(0,0,0, ${(opacity * count)})`;
+                block.style.backgroundColor = `rgba(255,0,0, ${(opacity * count)})`;
             })
         }
 
-        let createParentDiv = (index) => {
-
-            let blockRow = document.createElement('div');
-            blockRow.className = "row";
-            blockRow.id = `row_${index}`;
-            blockRow.style.cssText = `height: ${ROW_LENGTH/gridLength}px`;
-
-            for (let k = 1; k <= gridLength; k++) {
-                let block = createChildDiv();
-                blockRow.appendChild(block);
-            }
-            content.appendChild(blockRow);
+        let idArray = [];
+        let padSize = gridLength * gridLength;
+    
+        for (let i = 1; i <= padSize; i++) {
+            idArray[i - 1] = i.toString();
         }
+        idArray.reverse();
 
-        
-        for (let j = 1; j <= gridLength; j++) {
-            createParentDiv(j);
-        }
+        gridLength = promptUser();
+        createCanvas(gridLength);
+
+        reset.addEventListener('click', () => {
+            console.log("RESET");
+            clearCanvas();
+
+            let gridLength = promptUser();
+            createCanvas(gridLength);
+        })
         
     </script>
 </body>
